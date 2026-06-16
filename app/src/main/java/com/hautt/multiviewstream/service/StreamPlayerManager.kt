@@ -54,8 +54,10 @@ class StreamPlayerManager(private val context: Context) {
             .setBufferDurationsMs(
                 if (isPrimary) DefaultLoadControl.DEFAULT_MIN_BUFFER_MS else THUMBNAIL_BUFFER_MS,
                 if (isPrimary) DefaultLoadControl.DEFAULT_MAX_BUFFER_MS else THUMBNAIL_BUFFER_MS * 2,
-                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
-                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
+                if (isPrimary) DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS
+                else minOf(DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS, THUMBNAIL_BUFFER_MS),
+                if (isPrimary) DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
+                else minOf(DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS, THUMBNAIL_BUFFER_MS)
             )
             .build()
 
